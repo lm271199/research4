@@ -1,0 +1,7 @@
+# Python >= 3.9
+# torch 与 torchvision 需版本匹配，建议按官网 selector 安装对应 CUDA 版本：
+# https://pytorch.org/get-started/locally/
+torch>=2.0
+torchvision>=0.15
+numpy>=1.24
+matplotlib>=3.7
