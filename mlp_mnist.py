@@ -34,7 +34,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 
-# 绘图色板：冷色调，与 assets/ 中的矢量图保持一致
+
 PALETTE: dict[str, str] = {
     "train": "#1F4E79",
     "val": "#3E86B0",
@@ -71,9 +71,7 @@ class Config:
     deterministic: bool = True
 
 
-# ---------------------------------------------------------------------------
 # 可复现性控制
-# ---------------------------------------------------------------------------
 def set_seed(seed: int, deterministic: bool = True) -> None:
     """固定 Python / NumPy / CPU / CUDA 的随机源，并尽可能启用确定性算子。"""
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -108,9 +106,7 @@ def seeded_generator(seed: int) -> torch.Generator:
     return torch.Generator().manual_seed(seed)
 
 
-# ---------------------------------------------------------------------------
 # 数据与模型
-# ---------------------------------------------------------------------------
 def build_transform() -> transforms.Compose:
     """ToTensor 将像素缩放到 [0,1]，Normalize 再做通道标准化。"""
     return transforms.Compose(
@@ -184,9 +180,7 @@ def count_parameters(model: nn.Module) -> int:
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
-# ---------------------------------------------------------------------------
 # 训练与评估
-# ---------------------------------------------------------------------------
 def train_one_epoch(
     model: nn.Module,
     loader: DataLoader,
@@ -234,9 +228,7 @@ def evaluate(
     return {"loss": loss_sum / total, "acc": correct / total}
 
 
-# ---------------------------------------------------------------------------
 # 结果持久化
-# ---------------------------------------------------------------------------
 def save_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
@@ -296,9 +288,7 @@ def plot_curves(history: Sequence[dict[str, Any]], path: Path) -> None:
     plt.close(fig)
 
 
-# ---------------------------------------------------------------------------
 # 实验主流程
-# ---------------------------------------------------------------------------
 def run(cfg: Config) -> dict[str, Any]:
     set_seed(cfg.seed, cfg.deterministic)
     device = resolve_device(cfg.device)
